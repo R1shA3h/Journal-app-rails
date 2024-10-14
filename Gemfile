@@ -4,6 +4,8 @@ source "https://rubygems.org"
 gem "rails", "~> 7.2.1"
 gem 'devise', '~> 4.9', '>= 4.9.2'
 
+
+
 gem 'image_processing', '~> 1.12', '>= 1.12.2'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

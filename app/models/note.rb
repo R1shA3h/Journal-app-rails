@@ -1,8 +1,7 @@
 class Note < ApplicationRecord
   belongs_to :user
-  has_many_attached :files do |attachables|
-    attachables.variant :thumb, resize_to_fill: [200,200]
-  end
+  has_many_attached :files
+
   validates :title, presence: true
   validates :description, presence: true
   validates :visibility, presence: true, inclusion: { in: %w(public private shared) }
