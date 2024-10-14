@@ -57,10 +57,15 @@ rails server
 Visit http://localhost:3000 to view the app.
 
 ## Usage
+
 Signup/Login: Users can sign up using their email or Google account.
+
 Create a Note: After login, users can create a new note by filling in the title, description, and attaching files (images, videos, PDFs, etc.).
+
 Edit/Delete Notes: Users can edit or delete their existing notes.
+
 Public/Private Notes: Toggle between public (shareable) and private (personal) visibility for each note.
+
 Share Notes: If a note is public, a shareable URL is generated to allow others to view the note.
 
 
