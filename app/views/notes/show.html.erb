@@ -1,0 +1,60 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+  <div class="flex flex-col py-8">
+    <%= render @note %>
+    
+    <div class="flex mt-4">
+      <%= link_to "Edit this note", edit_note_path(@note), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to "Back to notes", root_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to "Share", "#", id: 'share-button', class: "ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" %>
+    </div>
+    
+    <div class="mt-8">
+      <%= button_to "Destroy this note", @note, method: :delete, class: "mt-4 border text-white bg-red-500 rounded-md py-2 px-6" %>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal (for shared notes) -->
+<div id="shareModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-lg p-6 shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Share Note</h2>
+      <%= form_with url: share_note_path(@note), method: :post, local: true do |f| %>
+        <div class="mb-4">
+          <%= f.label :recipient_email, "Recipient Email" %>
+          <%= f.email_field :recipient_email, class: "border p-2 w-full" %>
+        </div>
+        <div class="mb-4">
+          <%= f.label :permission, "Permission" %>
+          <%= f.select :permission, options_for_select([['Read', 'read'], ['Read + Write', 'write']], 'read'), class: "border p-2 w-full" %>
+        </div>
+        <div class="flex justify-end">
+          <%= f.submit "Share", class: "bg-blue-600 text-white py-2 px-4 rounded" %>
+          <button type="button" id="closeModal" class="ml-4 bg-gray-400 text-white py-2 px-4 rounded">Cancel</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("share-button").onclick = function(event) {
+    event.preventDefault();
+    const visibility = "<%= @note.visibility %>";
+    const noteUrl = "<%= note_url(@note) %>";
+
+    if (visibility === "public") {
+      navigator.clipboard.writeText(noteUrl).then(() => {
+        alert("Public URL copied to clipboard: " + noteUrl);
+      });
+    } else if (visibility === "private") {
+      alert("Private messages can't be shared.");
+    } else if (visibility === "shared") {
+      document.getElementById("shareModal").classList.remove("hidden");
+    }
+  };
+
+  document.getElementById("closeModal").onclick = function() {
+    document.getElementById("shareModal").classList.add("hidden");
+  };
+</script>

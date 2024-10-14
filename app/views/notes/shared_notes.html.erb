@@ -1,0 +1,22 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+  <h1 class="text-2xl font-bold">Shared Notes</h1>
+  
+  <% if @shared_notes.any? %>
+    <ul class="mt-4">
+      <% @shared_notes.each do |note| %>
+        <li class="flex justify-between border p-4 rounded mb-2">
+          <div>
+            <h2 class="font-semibold"><%= note.title %></h2>
+            <p><%= note.description %></p>
+          </div>
+          <div>
+            <%= link_to "View", note_path(note), class: "text-blue-600" %> 
+            <span class="ml-2">Permission: <%= note.shared_notes.find_by(user_id: current_user.id).permission %></span> <!-- Adjust as needed -->
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No shared notes available. Click above on Journal to go back to home</p>
+  <% end %>
+</div>

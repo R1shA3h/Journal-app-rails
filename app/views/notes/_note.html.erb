@@ -1,0 +1,50 @@
+<div id="<%= dom_id note %>" class="rounded-md border border-black ">
+  <p class="text-3xl font-light">
+    <%= note.title %>
+  </p>
+
+  <div class="mb-3 border border-black w-full ">
+
+  </div>
+
+  <p class="text-base px-4">
+    <%= note.description %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Visibility:</strong>
+    <%= note.visibility.capitalize %>
+  </p>
+
+
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Files:</strong>
+    <% note.files.each do |file| %>
+      <div class="my-2 flex items-center">
+        
+        <!-- For Images -->
+        <% if file.image? %>
+          <%= image_tag(asset_path("image.png"), size: "20x20", class: "mr-2") %>
+          <%= link_to file.filename, rails_blob_path(file), class: "text-blue-500" %>
+
+        <!-- For Videos -->
+        <% elsif file.video? %>
+          <%= image_tag(asset_path("video.png"), size: "20x20", class: "mr-2") %>
+          <%= link_to file.filename, rails_blob_path(file), class: "text-blue-500" %>
+
+        <!-- For PDFs -->
+        <% elsif file.content_type == "application/pdf" %>
+          <%= image_tag(asset_path("pdf_icon.png"), size: "20x20", class: "mr-2") %>
+          <%= link_to file.filename, rails_blob_path(file, disposition: "attachment"), class: "text-blue-500" %>
+
+        <!-- For Other Files -->
+        <% else %>
+          <%= link_to "Download #{file.filename}", rails_blob_path(file, disposition: "attachment"), class: "text-blue-500" %>
+        <% end %>
+
+      </div>
+    <% end %>
+  </p>
+  
+</div>
