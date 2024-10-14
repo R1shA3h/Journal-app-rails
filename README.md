@@ -3,16 +3,24 @@ A simple Rails-based journal application that allows users to create, manage, an
 
 ## Features
 User Authentication: Powered by Devise with Google OAuth2 support.
+
 Note Creation: Users can create notes with a title, description, and file attachments (images, videos, PDFs, etc.).
+
 File Attachments: Supports uploading and viewing images, videos, and other files with validation on file types and size (max 10 MB).
+
 Public/Private Notes: Notes can be made public with a shareable URL or kept private.
+
 AWS S3 Integration: Stores file attachments securely in AWS S3.
+
 Grid Layout: Displays all notes in a grid format for easy viewing.
+
 Dashboard: A dedicated dashboard for viewing shared journal entries.
 
 ## Prerequisites
 Ruby 3.2
+
 Rails 7.1
+
 PostgreSQL
 
 ## Setup Instructions
@@ -34,11 +42,13 @@ rails db:migrate
 
 
 4. Precompile Assets
+
 Precompile the assets before starting the server:
 
 rails assets:precompile
 
 5. Start the Rails Server
+
 Run the server with:
 
 rails server
