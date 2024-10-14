@@ -15,7 +15,7 @@ test:
   database: journal_main_test
 
 production:
-  <<: *default
-  database: journal_main_production
-  username: your_production_username
-  password: <%= ENV['JOURNAL_MAIN_DATABASE_PASSWORD'] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>
