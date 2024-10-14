@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 }%>
@@ -14,3 +15,26 @@ test:
 production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
+=======
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: postgres
+  password: 2003
+  host: localhost
+
+development:
+  <<: *default
+  database: journal_main_development
+
+test:
+  <<: *default
+  database: journal_main_test
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>
+>>>>>>> 7865a0cff911f3eb6f7ca80c547f2202be309093
