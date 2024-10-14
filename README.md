@@ -11,8 +11,8 @@ Grid Layout: Displays all notes in a grid format for easy viewing.
 Dashboard: A dedicated dashboard for viewing shared journal entries.
 
 ## Prerequisites
-Ruby 3.x
-Rails 7.x
+Ruby 3.2
+Rails 7.1
 PostgreSQL
 
 ## Setup Instructions
