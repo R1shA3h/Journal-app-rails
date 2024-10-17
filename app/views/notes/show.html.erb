@@ -1,18 +1,28 @@
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
   <div class="flex flex-col py-8">
     <%= render @note %>
-    
+
     <div class="flex mt-4">
-      <%= link_to "Edit this note", edit_note_path(@note), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <!-- Conditionally render Edit button if permission is 'write' -->
+
+      <%= link_to edit_note_path(@note), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" do %>
+        Edit this note
+      <% end if @note.user_id == current_user.id || @shared_note&.note_editable? %>
+      <!-- Hide Share button when viewing with permission -->
       <%= link_to "Back to notes", root_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      <%= link_to "Share", "#", id: 'share-button', class: "ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" %>
+      <%= link_to "#", id: 'share-button', class: "ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" do %>
+        Share
+      <% end if @note.user_id == current_user.id %>
     </div>
-    
-    <div class="mt-8">
-      <%= button_to "Destroy this note", @note, method: :delete, class: "mt-4 border text-white bg-red-500 rounded-md py-2 px-6" %>
-    </div>
+
+    <% if @note.user_id == current_user.id %>
+      <div class="mt-8">
+        <%= button_to "Destroy this note", @note, method: :delete, class: "mt-4 border text-white bg-red-500 rounded-md py-2 px-6" %>
+      </div>
+    <% end %>
   </div>
 </div>
+
 
 <!-- Share Modal -->
 <div id="shareModal" class="hidden fixed z-10 inset-0 overflow-y-auto">

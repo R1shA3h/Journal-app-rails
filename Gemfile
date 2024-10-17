@@ -2,11 +2,10 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1"
-gem 'devise', '~> 4.9', '>= 4.9.2'
+gem "devise", "~> 4.9", ">= 4.9.2"
+gem "dotenv-rails"
 
-
-
-gem 'image_processing', '~> 1.12', '>= 1.12.2'
+gem "image_processing", "~> 1.12", ">= 1.12.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use postgresql as the database for Active Record
@@ -23,11 +22,11 @@ gem "stimulus-rails"
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
-gem 'foreman'
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
+gem "foreman"
+gem "omniauth"
+gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
-gem 'mini_magick'
+gem "mini_magick"
 gem "aws-sdk-s3", require: false
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]

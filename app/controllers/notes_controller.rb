@@ -7,6 +7,7 @@ class NotesController < ApplicationController
   end
 
   def show
+    @shared_note = NotePermission.find_by(id: params[:shared_note_id])
     respond_to do |format|
       format.html # renders show.html.erb
       format.json { render json: { visibility: @note.visibility } }
@@ -67,13 +68,13 @@ class NotesController < ApplicationController
 
     if user_to_share_with
       # Check if the note is already shared with the user
-      existing_permission = NotesPermission.find_by(note_id: @note.id, user_id: user_to_share_with.id)
+      existing_permission = NotePermission.find_by(note_id: @note.id, user_id: user_to_share_with.id)
 
       if existing_permission
         render json: { error: "Note already shared with this user." }, status: :ok
       else
         # Create a new permission record
-        @shared_note = NotesPermission.create(
+        @shared_note = NotePermission.create(
           note: @note,
           user: user_to_share_with,
           permission: permission,
@@ -110,7 +111,7 @@ class NotesController < ApplicationController
   def set_note
     @note = current_user.notes.find_by(id: params[:id]) ||
             Note.joins(:note_permissions)
-                .where(note_permissions: { shared_to: current_user.id })
+                .where(note_permissions: { shared_to: current_user.email })
                 .find_by(id: params[:id])
     raise ActiveRecord::RecordNotFound unless @note
   end

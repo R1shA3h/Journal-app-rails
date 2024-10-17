@@ -9,7 +9,8 @@ class NotesPermissionsController < ApplicationController
         title: note.title,
         content: note.description,  # Ensure to match the actual field in the Note model
         shared_by: permission_record.shared_by,
-        permission: permission_record.permission
+        permission: permission_record.permission,
+        shared_note_id: permission_record.id
       }
     end
 
@@ -59,6 +60,11 @@ class NotesPermissionsController < ApplicationController
     }, status: :ok
   end
 
+  def show
+    @note_permission = @note.shared_notes.find_by(user_id: current_user.id)
+    render "notes/show" # Reuse the show view from NotesController
+  end
+
   private
 
   def note_params
@@ -72,5 +78,9 @@ class NotesPermissionsController < ApplicationController
     else
       @shared_note = nil
     end
+  end
+
+  def set_note
+    @note = Note.find(params[:id])
   end
 end

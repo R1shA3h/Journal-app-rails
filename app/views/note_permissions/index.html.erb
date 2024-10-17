@@ -9,7 +9,7 @@
           <p><%= shared_note[:content] %></p>
           <p class="mt-2 text-sm text-gray-600">Shared by: <%= shared_note[:shared_by] %></p>
           <p class="mt-2 text-sm text-gray-600">Permission: <%= shared_note[:permission] %></p>
-          <%= link_to "View Note", note_path(shared_note[:id]), class: "text-blue-500 hover:underline" %>
+          <%= link_to "View Note", note_path(shared_note[:id], shared_note_id: shared_note[:shared_note_id]), class: "text-blue-500 hover:underline" %>
         </li>
       <% end %>
     </ul>
