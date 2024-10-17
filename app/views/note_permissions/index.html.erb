@@ -1,0 +1,19 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+  <h1 class="text-2xl font-bold mb-6">Shared Notes</h1>
+
+  <% if @shared_notes.any? %>
+    <ul class="space-y-4">
+      <% @shared_notes.each do |shared_note| %>
+        <li class="border p-4 rounded-md shadow-sm">
+          <h2 class="text-xl font-semibold"><%= shared_note[:title] %></h2>
+          <p><%= shared_note[:content] %></p>
+          <p class="mt-2 text-sm text-gray-600">Shared by: <%= shared_note[:shared_by] %></p>
+          <p class="mt-2 text-sm text-gray-600">Permission: <%= shared_note[:permission] %></p>
+          <%= link_to "View Note", note_path(shared_note[:id]), class: "text-blue-500 hover:underline" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No notes have been shared with you yet.</p>
+  <% end %>
+</div>

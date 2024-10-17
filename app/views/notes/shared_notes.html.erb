@@ -10,7 +10,7 @@
             <p><%= note.description %></p>
           </div>
           <div>
-            <%= link_to "View", note_path(note), class: "text-blue-600" %> 
+            <%= link_to "View", edit_note_path(@note), class: "text-blue-600" %> 
             <span class="ml-2">Permission: <%= note.shared_notes.find_by(user_id: current_user.id).permission %></span> <!-- Adjust as needed -->
           </div>
         </li>

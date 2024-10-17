@@ -1,10 +1,10 @@
 class Note < ApplicationRecord
   belongs_to :user
   has_many_attached :files
-
+  has_many :note_permissions, dependent: :destroy
   validates :title, presence: true
   validates :description, presence: true
-  validates :visibility, presence: true, inclusion: { in: %w(public private shared) }
+  validates :visibility, presence: true, inclusion: { in: %w[public private shared] }
 
   # Validation for file size (restricting to 10 MB)
   validate :files_size_validation
@@ -24,7 +24,7 @@ class Note < ApplicationRecord
 
   def acceptable_file_types
     files.each do |file|
-      acceptable_types = ["image/jpeg", "image/png", "image/gif", "video/mp4", "application/pdf", "text/plain"]
+      acceptable_types = [ "image/jpeg", "image/png", "image/gif", "video/mp4", "application/pdf", "text/plain" ]
       unless acceptable_types.include?(file.content_type)
         errors.add(:files, "must be a JPEG, PNG, GIF image, MP4 video, PDF, or plain text file")
       end

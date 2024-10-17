@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: %i[ show edit update destroy ]
+  before_action :set_note, only: %i[ show edit update destroy share]
   before_action :authenticate_user!
 
   def index
@@ -38,18 +38,62 @@ class NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
-    
+
     # Append new files to the existing ones
     if note_params[:files].present?
       @note.files.attach(note_params[:files])
     end
-  
+
     if @note.update(note_params.except(:files)) # Update other attributes except files
-      redirect_to @note, notice: 'Note was successfully updated.'
+      redirect_to @note, notice: "Note was successfully updated."
     else
       render :edit
     end
   end
+
+  def share
+    # Find the note by the ID passed in the route
+    @note = Note.find_by(id: params[:id])
+
+    # Ensure that the note exists
+    if @note.nil?
+      render json: { error: "Note not found" }, status: :not_found
+      return
+    end
+
+    # Find user to share with by email
+    user_to_share_with = User.find_by(email: params[:recipient_email])
+    permission = params[:permission] || "read"
+
+    if user_to_share_with
+      # Check if the note is already shared with the user
+      existing_permission = NotesPermission.find_by(note_id: @note.id, user_id: user_to_share_with.id)
+
+      if existing_permission
+        render json: { error: "Note already shared with this user." }, status: :ok
+      else
+        # Create a new permission record
+        @shared_note = NotesPermission.create(
+          note: @note,
+          user: user_to_share_with,
+          permission: permission,
+          shared_by: current_user.email,
+          shared_to: user_to_share_with.email
+        )
+        render json: { message: "Note shared successfully!" }, status: :ok
+      end
+    else
+      render json: { error: "User not found." }, status: :not_found
+    end
+  end
+
+
+
+  def sharednotes
+    sharednote=note.find_by(id: params[:id])
+    render json: sharednote, status: :ok
+  end
+
 
 
   def destroy
@@ -64,8 +108,13 @@ class NotesController < ApplicationController
   private
 
   def set_note
-    @note = current_user.notes.find(params[:id])
+    @note = current_user.notes.find_by(id: params[:id]) ||
+            Note.joins(:note_permissions)
+                .where(note_permissions: { shared_to: current_user.id })
+                .find_by(id: params[:id])
+    raise ActiveRecord::RecordNotFound unless @note
   end
+
 
   def note_params
     params.require(:note).permit(:title, :description, :visibility, files: [])

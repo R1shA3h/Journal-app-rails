@@ -14,15 +14,15 @@
   </div>
 </div>
 
-<!-- Share Modal (for shared notes) -->
+<!-- Share Modal -->
 <div id="shareModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
   <div class="flex items-center justify-center min-h-screen">
     <div class="bg-white rounded-lg p-6 shadow-lg max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Share Note</h2>
-      <%= form_with url: share_note_path(@note), method: :post, local: true do |f| %>
+      <%= form_with url: share_note_path(@note), method: :post, local: true, id: "shareForm" do |f| %>
         <div class="mb-4">
           <%= f.label :recipient_email, "Recipient Email" %>
-          <%= f.email_field :recipient_email, class: "border p-2 w-full" %>
+          <%= f.email_field :recipient_email, class: "border p-2 w-full", required: true %>
         </div>
         <div class="mb-4">
           <%= f.label :permission, "Permission" %>
@@ -41,14 +41,14 @@
   document.getElementById("share-button").onclick = function(event) {
     event.preventDefault();
     const visibility = "<%= @note.visibility %>";
-    const noteUrl = "<%= note_url(@note) %>";
 
     if (visibility === "public") {
+      const noteUrl = "<%= note_url(@note) %>";
       navigator.clipboard.writeText(noteUrl).then(() => {
         alert("Public URL copied to clipboard: " + noteUrl);
       });
     } else if (visibility === "private") {
-      alert("Private messages can't be shared.");
+      alert("Private notes can't be shared.");
     } else if (visibility === "shared") {
       document.getElementById("shareModal").classList.remove("hidden");
     }
@@ -56,5 +56,33 @@
 
   document.getElementById("closeModal").onclick = function() {
     document.getElementById("shareModal").classList.add("hidden");
+  };
+
+  // Handle form submission
+  document.getElementById("shareForm").onsubmit = function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF token for security
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        alert(data.message); // Show success message
+        document.getElementById("shareModal").classList.add("hidden"); // Close modal
+      } else if (data.error) {
+        alert(data.error); // Show error message
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("An error occurred while sharing the note.");
+    });
   };
 </script>
