@@ -82,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: ENV['DATABASE_URL']
+  database: journal_main_production
   username: journal_main
   password: <%= ENV["JOURNAL_MAIN_DATABASE_PASSWORD"] %>
