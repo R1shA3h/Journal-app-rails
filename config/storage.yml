@@ -9,8 +9,8 @@ local:
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazon:
   service: S3
-  access_key_id: ENV['ACCESS_KEY_ID']
-  secret_access_key: ENV['SECRET_ACCESS_KEY']
+  access_key_id: AKIAQFC27HCCJD2TGXFX
+  secret_access_key: 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
   region: us-east-1
   bucket: journal-ruby
 

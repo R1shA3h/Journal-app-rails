@@ -88,5 +88,6 @@ test:
 production:
   <<: *default
   database: journal_main_production
-  username: journal_main
-  password: <%= ENV["JOURNAL_MAIN_DATABASE_PASSWORD"] %>
+  username: postgres
+  password: 2003
+  host: localhost 

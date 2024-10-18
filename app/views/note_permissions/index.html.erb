@@ -2,17 +2,23 @@
   <h1 class="text-2xl font-bold mb-6">Shared Notes</h1>
 
   <% if @shared_notes.any? %>
-    <ul class="space-y-4">
+    <div class="flex flex-wrap -mx-4">
       <% @shared_notes.each do |shared_note| %>
-        <li class="border p-4 rounded-md shadow-sm">
-          <h2 class="text-xl font-semibold"><%= shared_note[:title] %></h2>
-          <p><%= shared_note[:content] %></p>
-          <p class="mt-2 text-sm text-gray-600">Shared by: <%= shared_note[:shared_by] %></p>
-          <p class="mt-2 text-sm text-gray-600">Permission: <%= shared_note[:permission] %></p>
-          <%= link_to "View Note", note_path(shared_note[:id], shared_note_id: shared_note[:shared_note_id]), class: "text-blue-500 hover:underline" %>
-        </li>
+        <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-4 mb-4">
+          <div class="border p-4 rounded-md shadow-sm h-full flex flex-col justify-between">
+            <div>
+              <h2 class="text-xl font-semibold"><%= truncate(shared_note[:title], length: 30) %></h2>
+              <p><%= truncate(shared_note[:content], length: 80) %></p>
+            </div>
+            <div class="mt-2">
+              <p class="text-sm text-gray-600">Shared by: <%= shared_note[:shared_by] %></p>
+              <p class="text-sm text-gray-600">Permission: <%= shared_note[:permission] %></p>
+              <%= link_to "View Note", note_path(shared_note[:id], shared_note_id: shared_note[:shared_note_id]), class: "mt-4 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+            </div>
+          </div>
+        </div>
       <% end %>
-    </ul>
+    </div>
   <% else %>
     <p>No notes have been shared with you yet.</p>
   <% end %>

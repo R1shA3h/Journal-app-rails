@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
   resources :notes_permissions, only: [ :index, :destroy, :update_permission ]
-  # Nested routes for notes
+
   resources :notes, except: [ :index ] do
     member do
       post "share"  # Route for sharing a note
