@@ -12,7 +12,7 @@
       <%= link_to "Back to notes", root_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
       <%= link_to "#", id: 'share-button', class: "ml-2 rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" do %>
         Share
-      <% end if @note.user_id == current_user.id %>
+      <% end if @note.user_id == current_user.id || @shared_note&.note_editable? %>
     </div>
 
     <% if @note.user_id == current_user.id %>
@@ -54,14 +54,18 @@
 
     if (visibility === "public") {
       const noteUrl = "<%= note_url(@note) %>";
-      navigator.clipboard.writeText(noteUrl).then(() => {
-        alert("Public URL copied to clipboard: " + noteUrl);
-      });
+      // navigator.clipboard.writeText(noteUrl).then(() => {
+      //   alert("Public URL copied to clipboard: " + noteUrl+"fgjdfjgipajdf");
+        
+      // });
+      document.getElementById("shareModal").classList.remove("hidden");
+      
     } else if (visibility === "private") {
-      alert("Private notes can't be shared.");
-    } else if (visibility === "shared") {
+      // alert("Private notes can't be shared.");
       document.getElementById("shareModal").classList.remove("hidden");
     }
+
+
   };
 
   document.getElementById("closeModal").onclick = function() {
